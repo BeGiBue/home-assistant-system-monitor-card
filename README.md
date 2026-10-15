@@ -1,4 +1,6 @@
-<img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/images/system-monitor-card-logo-160.png" alt="System Monitor Card" width="160">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/images/system-monitor-card-logo-160.png?v=2" alt="System Monitor Card" width="160">
+</p>
 
 # System Monitor Card
 
