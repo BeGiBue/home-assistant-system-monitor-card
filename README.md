@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/images/system-monitor-card-logo-160.png" alt="System Monitor Card" width="160">
+
 # System Monitor Card
 
 Kompakte Custom-Card zur Überwachung des Hosts, auf dem Home Assistant läuft – vorkonfiguriert für einen **Raspberry Pi 5** mit der Integration **System Monitor**.
