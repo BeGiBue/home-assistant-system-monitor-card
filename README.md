@@ -8,6 +8,12 @@ Kompakte Custom-Card zur Überwachung des Hosts, auf dem Home Assistant läuft �
 
 **Version 1.0.3**
 
+## Vorschau
+
+| Normalbetrieb | Unterspannung |
+| --- | --- |
+| <img src="screenshots/system-monitor-normal-350-light.png" width="350" alt="System Monitor im Normalbetrieb, 350 px Kartenbreite, helles Theme"> | <img src="screenshots/system-monitor-undervoltage-350-light.png" width="350" alt="System Monitor mit Unterspannungswarnung, 350 px Kartenbreite, helles Theme"> |
+
 ## Funktionen
 
 - Theme-sensitive Darstellung: alle Farben kommen aus dem aktiven Home-Assistant-Theme (Light Mode, Dark Mode und benutzerdefinierte Themes)
