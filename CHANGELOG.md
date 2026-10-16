@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.4
+
+- Neue, im Browser erstellte Vorschauen aus dem unveränderten Original-Code in der README.
+- Vorschau-Bilder über absolute Raw-URLs für die Anzeige in GitHub und HACS eingebunden.
+- Versionsangaben für das Patch-Release aktualisiert.
+
+Keine Änderungen an der Funktionsweise der Karte oder Integration.
+
 ## 1.0.3 - 2026-10-08
 
 ### Behoben
