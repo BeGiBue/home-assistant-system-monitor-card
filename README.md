@@ -6,13 +6,13 @@
 
 Kompakte Custom-Card zur Überwachung des Hosts, auf dem Home Assistant läuft – vorkonfiguriert für einen **Raspberry Pi 5** mit der Integration **System Monitor**.
 
-**Version 1.0.3**
+**Version 1.0.4**
 
 ## Vorschau
 
 | Normalbetrieb | Unterspannung |
 | --- | --- |
-| <img src="screenshots/system-monitor-normal-350-light.png" width="350" alt="System Monitor im Normalbetrieb, 350 px Kartenbreite, helles Theme"> | <img src="screenshots/system-monitor-undervoltage-350-light.png" width="350" alt="System Monitor mit Unterspannungswarnung, 350 px Kartenbreite, helles Theme"> |
+| <img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/screenshots/system-monitor-normal-350-light.png" width="350" alt="System Monitor im Normalbetrieb, 350 px Kartenbreite, helles Theme"> | <img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/screenshots/system-monitor-undervoltage-350-light.png" width="350" alt="System Monitor mit Unterspannungswarnung, 350 px Kartenbreite, helles Theme"> |
 
 ## Funktionen
 
