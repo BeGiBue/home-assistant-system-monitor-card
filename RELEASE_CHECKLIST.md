@@ -1,17 +1,17 @@
-# Release Checklist — v1.0.3
+# Release Checklist — v2.0.0
 
 ## Repository vorbereitet
 
-- [x] `VERSION` steht auf `1.0.3`.
-- [x] Öffentliche Versionskennung in `system-monitor.js` steht auf `1.0.3`.
-- [x] `CHANGELOG.md` für `1.0.3` angelegt.
-- [x] `RELEASE_NOTES_1.0.3.md` vorbereitet.
+- [x] `VERSION` steht auf `2.0.0`.
+- [x] Öffentliche Versionskennung in `system-monitor.js` steht auf `2.0.0`.
+- [x] `CHANGELOG.md` für `2.0.0` angelegt.
+- [x] `RELEASE_NOTES_2.0.0.md` vorbereitet.
 - [x] `hacs.json` verweist auf `system-monitor.js`.
 - [x] HACS-Validierung ist für `main`, Pull Requests und manuelle Ausführung vorbereitet.
 - [x] README beschreibt Installation, Konfiguration und Layout.
 - [x] `.github/CODEOWNERS` enthält `@BeGiBue`.
 - [x] Lizenz AGPL-3.0-only (`LICENSE`).
-- [x] Syntaxprüfung von `system-monitor.js` und Testdarstellung mit simulierten Home-Assistant-Daten (Hell, Dunkel, Warnzustand, fremdes Theme).
+- [x] Syntaxprüfung von `system-monitor.js` und fünf adversariale Rendering-Tests mit `node tests/security.test.mjs`.
 
 ## Vor Veröffentlichung prüfen
 
@@ -27,8 +27,8 @@
 - [ ] „Letzter Start“ mit Home-Assistant-Zeitformat prüfen.
 - [ ] Screenshot aus Home Assistant als `images/Screenshot.png` hinzufügen und im README einbinden.
 
-## Veröffentlichung
+## Veröffentlichung (erst nach gesonderter Freigabe)
 
-- [ ] Nach dem erfolgreichen finalen HACS-Lauf Tag `v1.0.3` auf dem finalen `main`-Commit erstellen.
-- [ ] Danach GitHub Release `v1.0.3` mit dem Inhalt aus `RELEASE_NOTES_1.0.3.md` veröffentlichen.
-- [ ] Erst danach ggf. den PR für `hacs/default` erstellen.
+- [ ] Nach dem erfolgreichen finalen HACS-Lauf Tag `v2.0.0` auf dem finalen `main`-Commit erstellen.
+- [ ] Danach GitHub Release `v2.0.0` mit dem Inhalt aus `RELEASE_NOTES_2.0.0.md` veröffentlichen.
+- [x] Aufnahme in den offiziellen HACS-Katalog und Migration bestehender Custom-Repositories dokumentiert.

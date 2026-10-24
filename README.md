@@ -6,7 +6,7 @@
 
 Kompakte Custom-Card zur Überwachung des Hosts, auf dem Home Assistant läuft – vorkonfiguriert für einen **Raspberry Pi 5** mit der Integration **System Monitor**.
 
-**Version 1.0.4**
+**Version 2.0.0**
 
 ## Vorschau
 
@@ -66,23 +66,24 @@ Die Entity-IDs können je nach Home-Assistant-Version und Systemname abweichen. 
 
 ## Installation über HACS
 
-### Automatisch
+Das Projekt ist im offiziellen HACS-Katalog enthalten. Ein benutzerdefiniertes Repository ist für die reguläre Installation nicht erforderlich.
 
-Mit einem Klick das Repository in HACS öffnen und die System Monitor Card installieren:
+1. HACS öffnen und nach **System Monitor Card** suchen.
+2. **System Monitor Card** auswählen und installieren.
+3. Browser bzw. Home-Assistant-App vollständig neu laden.
+4. Die Karte im Dashboard hinzufügen und die Entitäten auswählen.
 
-[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=BeGiBue&repository=home-assistant-system-monitor-card&category=plugin)
+[![In HACS öffnen](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=BeGiBue&repository=home-assistant-system-monitor-card&category=plugin)
 
-Link zum Hinzufügen in HACS: <https://my.home-assistant.io/redirect/hacs_repository/?owner=BeGiBue&repository=home-assistant-system-monitor-card&category=plugin>
+### Bestehende Installation aus einem Custom Repository übernehmen
 
-Der Link nutzt „My Home Assistant“ und öffnet das Repository in deiner eigenen Home-Assistant-Instanz. Beim ersten Mal muss dort einmalig die Adresse deiner Instanz hinterlegt werden.
+1. Prüfen, ob **System Monitor Card** in der HACS-Suche im offiziellen Katalog verfügbar ist. Falls noch nicht, HACS aktualisieren und den bisherigen Eintrag vorerst behalten.
+2. Sobald der Katalogeintrag verfügbar ist, unter **HACS → Benutzerdefinierte Repositories** nur den Eintrag für `BeGiBue/home-assistant-system-monitor-card` entfernen.
+3. Die bestehende Installation **nicht deinstallieren**. Dashboard-Karten, YAML-Konfiguration und vorhandene Ressourcen beibehalten.
+4. HACS aktualisieren bzw. die Repository-Informationen neu laden und prüfen, dass die installierte Karte weiterhin erkannt wird und Updates angeboten werden.
+5. Nach einem Update das Frontend neu laden und die bestehenden Karten prüfen. Der Kartentyp `custom:system-monitor` und die Konfigurationsschlüssel bleiben erhalten.
 
-### Manuell
-
-1. In HACS **Benutzerdefinierte Repositories** öffnen.
-2. `https://github.com/BeGiBue/home-assistant-system-monitor-card` hinzufügen.
-3. Als Typ **Dashboard** auswählen.
-4. **System Monitor Card** installieren.
-5. Home Assistant bzw. den Browser vollständig neu laden.
+Die Major-Version 2.0.0 kennzeichnet die Aufnahme in den offiziellen HACS-Katalog und bedeutet nicht automatisch Breaking Changes. Diese Version verlangt keine Änderung vorhandener Kartenkonfigurationen.
 
 ### Ohne HACS
 
@@ -142,6 +143,8 @@ image_url: /local/images/pi5.png
 ```
 
 Mit `show_image: false` wird das Bild vollständig ausgeblendet. Bei sehr schmalen Karten (unter 320 px) liegt das Bild abgedunkelt hinter dem Titel, damit der Text lesbar bleibt.
+
+Eigene Bild-URLs lädt der Browser direkt. Externe Anbieter sehen dabei die IP-Adresse des Browsers; HTTP-Bilder bieten keine Transportverschlüsselung und können unter HTTPS blockiert werden. Bevorzugt lokale `/local/`-Bilder oder vertrauenswürdige HTTPS-Quellen verwenden und keine Zugangsdaten in Bild-URLs hinterlegen.
 
 ## Grafischer Editor
 
