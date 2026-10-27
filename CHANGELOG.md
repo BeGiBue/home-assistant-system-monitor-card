@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 - 2026-10-27
+
+- Aufräumarbeiten ohne Funktionsänderung: doppelten Baustein der Netzteil-Kachel mit den anderen Kacheln zusammengeführt und eine überflüssige Prüfung entfernt. Aussehen, Konfiguration und Verhalten bleiben unverändert.
+- Repository verschlankt: nicht benötigte Logo-Dateien, interne Release-Checkliste und die Pflicht-Datei `RELEASE_NOTES_<Version>.md` entfernt (der Release-Text kommt jetzt aus diesem Changelog), Security-Review gekürzt.
+
 ## 2.0.0 - 2026-10-24
 
 - Aufnahme in den offiziellen HACS-Katalog; Installation über die HACS-Suche als Standardweg dokumentiert.
@@ -22,6 +27,8 @@ Keine Änderungen an der Funktionsweise der Karte oder Integration.
 
 - Die Card wurde im Sections-Dashboard unten abgeschnitten. Die feste Höhe beträgt jetzt 6 Zeilen (376 px) statt 5 Zeilen (312 px), damit der Inhalt auch mit den Schriften von Home Assistant vollständig hineinpasst.
 - Masonry-Dashboards: `getCardSize()` meldet 8 statt 6.
+
+Nach dem Update über HACS den Browser vollständig neu laden. Falls die alte Höhe noch angezeigt wird, die Card einmal im Layout-Editor öffnen und speichern.
 
 ## 1.0.2 - 2026-10-08
 
