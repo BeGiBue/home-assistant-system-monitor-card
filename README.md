@@ -6,7 +6,7 @@
 
 Kompakte Custom-Card zur Überwachung des Hosts, auf dem Home Assistant läuft – vorkonfiguriert für einen **Raspberry Pi 5** mit der Integration **System Monitor**.
 
-**Version 2.0.0**
+**Version 2.0.1**
 
 ## Vorschau
 
@@ -18,15 +18,14 @@ Kompakte Custom-Card zur Überwachung des Hosts, auf dem Home Assistant läuft �
 
 - Theme-sensitive Darstellung: alle Farben kommen aus dem aktiven Home-Assistant-Theme (Light Mode, Dark Mode und benutzerdefinierte Themes)
 - Editierbarer Titel und Untertitel sowie frei wählbares Symbol, Standard `mdi:raspberry-pi`
-- Platinen-Illustration des Raspberry Pi 5 oben rechts, direkt in der JavaScript-Datei eingebettet; optional eigene Bild-URL oder ausblendbar
+- Platinen-Illustration des Raspberry Pi 5 oben rechts; optional eigene Bild-URL oder ausblendbar
 - Drei Kacheln: CPU-Auslastung, CPU-Temperatur und Netzteil-/Spannungsstatus
 - Arbeitsspeicher und Speicher als Fortschrittsbalken mit Prozentwert sowie Belegt und Frei
 - Warnfarben nach Schwellwerten: grün, orange und rot
 - „Letzter Start“ mit dem Zeit-/Datumsformat von Home Assistant
 - Tippen auf Kacheln, Balken sowie Belegt und Frei öffnet die Detailansicht der jeweiligen Entität
 - Alle Entitäten über native Home-Assistant-Entity-Picker auswählbar
-- Breite im Sections-Dashboard frei von 3 bis 12 Spalten einstellbar
-- Feste Höhe von 6 Zeilen (376 px) im Sections-Dashboard; die Höhe ist nicht manuell skalierbar
+- Breite im Sections-Dashboard frei von 3 bis 12 Spalten einstellbar, feste Höhe (siehe Layout / Größe)
 
 ## Warnfarben
 
@@ -38,7 +37,7 @@ Kompakte Custom-Card zur Überwachung des Hosts, auf dem Home Assistant läuft �
 | Speicher | 75 % | 90 % |
 | Netzteil | – | Unterspannung erkannt |
 
-Die Netzteil-Kachel zeigt „OK“ oder bei erkannter Unterspannung rot „Warnung / Spannung“.
+Die Netzteil-Kachel zeigt „OK“ oder rot „Warnung / Spannung“.
 
 ## Voraussetzungen
 
@@ -134,7 +133,7 @@ last_start_entity: sensor.system_monitor_last_boot
 
 ## Bild
 
-Oben rechts zeigt die Card eine Illustration des Raspberry Pi 5. Sie ist eine eigene, vereinfachte Zeichnung ohne Logo und direkt in der JavaScript-Komponente eingebettet; es wird kein separates Bild geladen.
+Oben rechts zeigt die Card eine Illustration des Raspberry Pi 5. Sie ist eine eigene, vereinfachte Zeichnung ohne Logo und direkt eingebettet; es wird kein separates Bild geladen.
 
 Für ein eigenes Bild, zum Beispiel ein freigestelltes Foto, kann im grafischen Editor eine Bild-URL eingetragen werden:
 
