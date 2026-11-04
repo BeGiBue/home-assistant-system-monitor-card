@@ -1,7 +1,7 @@
 /*
  * System Monitor Card — kompakte Home Assistant Custom Card zur Überwachung
  * eines Hosts (vorkonfiguriert für Raspberry Pi 5 mit der Integration "System Monitor").
- * Version 2.0.1 — AGPL-3.0-only — BeGiBue
+ * Version 2.1.0 — AGPL-3.0-only — BeGiBue
  * https://github.com/BeGiBue/home-assistant-system-monitor-card
  *
  * Installation: siehe README.md (HACS) oder manuell:
@@ -11,11 +11,83 @@
  *   3. Karte hinzufügen:  type: custom:system-monitor
  */
 
-const SYSTEM_MONITOR_CARD_VERSION = "2.0.1";
+const SYSTEM_MONITOR_CARD_VERSION = "2.1.0";
 
 // Eingebettete Platinen-Illustration (eigene Zeichnung, ohne Logo); optional per image_url ersetzbar
 const BOARD_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 118"><defs><linearGradient id="pcb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f9a52"/><stop offset="1" stop-color="#1b6d38"/></linearGradient><linearGradient id="met" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f3f6"/><stop offset="1" stop-color="#aeb4be"/></linearGradient><linearGradient id="soc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9dde3"/><stop offset="1" stop-color="#8f96a2"/></linearGradient><linearGradient id="usb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4fb8"/></linearGradient><linearGradient id="usb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4f58"/><stop offset="1" stop-color="#23262c"/></linearGradient></defs><rect x="6" y="6" width="168" height="106" rx="8" fill="url(#pcb)" stroke="#124f28" stroke-width="1.5"/><rect x="9" y="9" width="162" height="100" rx="6" fill="none" stroke="#ffffff" stroke-opacity=".12"/><path d="M24 30H58" stroke="#ffffff" stroke-opacity=".10" stroke-width="1"/><path d="M24 36H58" stroke="#ffffff" stroke-opacity=".10" stroke-width="1"/><path d="M24 42H58" stroke="#ffffff" stroke-opacity=".10" stroke-width="1"/><circle cx="16" cy="16" r="4.6" fill="#d8b24a"/><circle cx="16" cy="16" r="2.6" fill="#0f3d20"/><circle cx="16" cy="102" r="4.6" fill="#d8b24a"/><circle cx="16" cy="102" r="2.6" fill="#0f3d20"/><circle cx="122" cy="16" r="4.6" fill="#d8b24a"/><circle cx="122" cy="16" r="2.6" fill="#0f3d20"/><circle cx="122" cy="102" r="4.6" fill="#d8b24a"/><circle cx="122" cy="102" r="2.6" fill="#0f3d20"/><rect x="30" y="10" width="86" height="11" rx="1.5" fill="#1a1c20"/><rect x="33.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="33.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="37.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="37.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="41.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="41.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="45.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="45.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="49.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="49.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="54.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="54.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="58.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="58.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="62.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="62.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="66.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="66.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="70.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="70.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="75.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="75.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="79.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="79.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="83.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="83.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="87.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="87.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="91.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="91.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="96.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="96.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="100.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="100.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="104.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="104.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="108.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="108.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="112.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="112.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="60" y="36" width="40" height="40" rx="4" fill="#202328"/><rect x="63" y="39" width="34" height="34" rx="3" fill="url(#soc)" stroke="#6f7580" stroke-width="1"/><rect x="68" y="44" width="24" height="24" rx="2" fill="none" stroke="#ffffff" stroke-opacity=".45"/><rect x="106" y="40" width="22" height="26" rx="2.5" fill="#17191d"/><rect x="109" y="43" width="16" height="3" fill="#ffffff" fill-opacity=".14"/><rect x="28" y="44" width="24" height="18" rx="2" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="30" y="70" width="7" height="4" rx=".8" fill="#161719"/><rect x="40" y="70" width="7" height="4" rx=".8" fill="#161719"/><rect x="50" y="70" width="7" height="4" rx=".8" fill="#161719"/><rect x="104" y="74" width="5" height="8" rx=".8" fill="#161719"/><rect x="112" y="74" width="5" height="8" rx=".8" fill="#161719"/><rect x="60" y="84" width="10" height="5" rx=".8" fill="#161719"/><rect x="2" y="48" width="20" height="24" rx="2" fill="#2a2d33"/><rect x="4" y="52" width="14" height="16" rx="1" fill="#14161a"/><rect x="130" y="10" width="16" height="6" rx="1" fill="#f0f0ee"/><rect x="130" y="100" width="16" height="6" rx="1" fill="#f0f0ee"/><rect x="22" y="104" width="15" height="9" rx="2.5" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="26" y="107" width="7" height="3" rx="1.5" fill="#1a1c20"/><rect x="46" y="104" width="14" height="9" rx="1.5" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="49" y="107" width="8" height="3" fill="#1a1c20"/><rect x="66" y="104" width="14" height="9" rx="1.5" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="69" y="107" width="8" height="3" fill="#1a1c20"/><rect x="136" y="20" width="40" height="32" rx="2" fill="url(#met)" stroke="#8d939d" stroke-width="1"/><rect x="150" y="26" width="22" height="20" rx="1.5" fill="#14161a"/><rect x="152" y="28" width="18" height="3" fill="#e6c25a" fill-opacity=".8"/><circle cx="142" cy="26" r="1.6" fill="#7bd88f"/><circle cx="142" cy="32" r="1.6" fill="#f2b84b"/><rect x="136" y="54" width="40" height="26" rx="2" fill="url(#usb3)" stroke="#173f94" stroke-width="1"/><rect x="152" y="58" width="20" height="7" fill="#0c1220"/><rect x="152" y="69" width="20" height="7" fill="#0c1220"/><rect x="136" y="82" width="40" height="26" rx="2" fill="url(#usb2)" stroke="#16181c" stroke-width="1"/><rect x="152" y="86" width="20" height="7" fill="#0c0d10"/><rect x="152" y="97" width="20" height="7" fill="#0c0d10"/></svg>';
 const BOARD_IMG = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(BOARD_SVG);
+
+// Language: German when Home Assistant uses German, otherwise English.
+const SM_I18N={
+  "en": {
+    "l_title": "Title",
+    "l_subtitle": "Subtitle",
+    "l_icon": "Icon",
+    "l_show_image": "Show device image",
+    "l_image_url": "Custom device image (URL, optional)",
+    "l_cpu_entity": "CPU usage",
+    "l_temperature_entity": "CPU temperature",
+    "l_power_entity": "Power supply / undervoltage",
+    "l_memory_percent_entity": "RAM used (%)",
+    "l_memory_used_entity": "RAM used",
+    "l_memory_free_entity": "RAM free",
+    "l_disk_percent_entity": "Storage used (%)",
+    "l_disk_used_entity": "Storage used",
+    "l_disk_free_entity": "Storage free",
+    "l_last_start_entity": "Last boot",
+    "s_general": "General",
+    "s_system": "System",
+    "s_memory": "Memory",
+    "s_disk": "Storage",
+    "s_boot": "Boot",
+    "h_image_url": "Empty = built-in illustration, e.g. /local/images/pi5.png",
+    "memory": "Memory",
+    "disk": "Storage",
+    "temperature": "Temperature",
+    "warning": "Warning",
+    "voltage": "Voltage",
+    "power_supply": "Power supply",
+    "used": "Used",
+    "free": "Free",
+    "last_start": "Last boot",
+    "description": "Compact monitoring card for a host, e.g. Raspberry Pi 5 (System Monitor integration)."
+  },
+  "de": {
+    "l_title": "Titel",
+    "l_subtitle": "Untertitel",
+    "l_icon": "Symbol",
+    "l_show_image": "Gerätebild anzeigen",
+    "l_image_url": "Eigenes Gerätebild (URL, optional)",
+    "l_cpu_entity": "CPU-Auslastung",
+    "l_temperature_entity": "CPU-Temperatur",
+    "l_power_entity": "Netzteil / Unterspannung",
+    "l_memory_percent_entity": "RAM belegt (%)",
+    "l_memory_used_entity": "RAM belegt",
+    "l_memory_free_entity": "RAM frei",
+    "l_disk_percent_entity": "Speicher belegt (%)",
+    "l_disk_used_entity": "Speicher belegt",
+    "l_disk_free_entity": "Speicher frei",
+    "l_last_start_entity": "Letzter Start",
+    "s_general": "Allgemein",
+    "s_system": "System",
+    "s_memory": "Arbeitsspeicher",
+    "s_disk": "Speicher",
+    "s_boot": "Start",
+    "h_image_url": "Leer = eingebettete Illustration, z. B. /local/images/pi5.png",
+    "memory": "Arbeitsspeicher",
+    "disk": "Speicher",
+    "temperature": "Temperatur",
+    "warning": "Warnung",
+    "voltage": "Spannung",
+    "power_supply": "Netzteil",
+    "used": "Belegt",
+    "free": "Frei",
+    "last_start": "Letzter Start",
+    "description": "Kompakte Monitoring-Karte für einen Host, z. B. Raspberry Pi 5 (Integration System Monitor)."
+  }
+};
+const SMLang=(hass)=>String(hass?.locale?.language||hass?.language||globalThis.document?.querySelector?.("home-assistant")?.hass?.locale?.language||globalThis.document?.documentElement?.lang||globalThis.navigator?.language||"en").toLowerCase().startsWith("de")?"de":"en";
+const SMT=(hass)=>SM_I18N[SMLang(hass)];
 
 const DEF = {
   title: "System Monitor",
@@ -28,12 +100,10 @@ const DEF = {
   temperature_entity: "sensor.system_monitor_processor_temperature",
   power_entity: "binary_sensor.rpi_power_status",
 
-  memory_title: "Arbeitsspeicher",
   memory_percent_entity: "sensor.system_monitor_memory_use_percent",
   memory_used_entity: "sensor.system_monitor_memory_use",
   memory_free_entity: "sensor.system_monitor_memory_free",
 
-  disk_title: "Speicher",
   disk_percent_entity: "sensor.system_monitor_disk_use_percent",
   disk_used_entity: "sensor.system_monitor_disk_use",
   disk_free_entity: "sensor.system_monitor_disk_free",
@@ -56,26 +126,18 @@ class SystemMonitorCard extends HTMLElement {
     const e = (n) => ({ name: n, selector: { entity: {} } });
     const t = (n) => ({ name: n, selector: { text: {} } });
     const x = (name, title, schema) => ({ type: "expandable", name, title, flatten: true, schema });
-    const L = {
-      title: "Titel", subtitle: "Untertitel", icon: "Symbol",
-      show_image: "Gerätebild anzeigen", image_url: "Eigenes Gerätebild (URL, optional)",
-      cpu_entity: "CPU-Auslastung", temperature_entity: "CPU-Temperatur", power_entity: "Netzteil / Unterspannung",
-      memory_title: "Titel", memory_percent_entity: "RAM belegt (%)",
-      memory_used_entity: "RAM belegt", memory_free_entity: "RAM frei",
-      disk_title: "Titel", disk_percent_entity: "Speicher belegt (%)",
-      disk_used_entity: "Speicher belegt", disk_free_entity: "Speicher frei",
-      last_start_entity: "Letzter Start",
-    };
+    const T = SMT();
+    const L = { memory_title: T.l_title, disk_title: T.l_title };
     return {
       schema: [
-        x("general", "Allgemein", [t("title"), t("subtitle"), { name: "icon", selector: { icon: {} } }, { name: "show_image", selector: { boolean: {} } }, t("image_url")]),
-        x("system", "System", [e("cpu_entity"), e("temperature_entity"), e("power_entity")]),
-        x("memory", "Arbeitsspeicher", [t("memory_title"), e("memory_percent_entity"), e("memory_used_entity"), e("memory_free_entity")]),
-        x("disk", "Speicher", [t("disk_title"), e("disk_percent_entity"), e("disk_used_entity"), e("disk_free_entity")]),
-        x("boot", "Start", [e("last_start_entity")]),
+        x("general", T.s_general, [t("title"), t("subtitle"), { name: "icon", selector: { icon: {} } }, { name: "show_image", selector: { boolean: {} } }, t("image_url")]),
+        x("system", T.s_system, [e("cpu_entity"), e("temperature_entity"), e("power_entity")]),
+        x("memory", T.s_memory, [t("memory_title"), e("memory_percent_entity"), e("memory_used_entity"), e("memory_free_entity")]),
+        x("disk", T.s_disk, [t("disk_title"), e("disk_percent_entity"), e("disk_used_entity"), e("disk_free_entity")]),
+        x("boot", T.s_boot, [e("last_start_entity")]),
       ],
-      computeLabel: (s) => L[s.name],
-      computeHelper: (s) => (s.name === "image_url" ? "Leer = eingebettete Illustration, z. B. /local/images/pi5.png" : undefined),
+      computeLabel: (s) => L[s.name] || T[`l_${s.name}`],
+      computeHelper: (s) => (s.name === "image_url" ? T.h_image_url : undefined),
     };
   }
 
@@ -153,8 +215,9 @@ class SystemMonitorCard extends HTMLElement {
     const s = this._s(id);
     const low = s?.state === "on";
     const na = !s || ["unavailable", "unknown"].includes(s.state);
-    const text = na ? "—" : low ? "Warnung" : "OK";
-    const label = low ? "Spannung" : "Netzteil";
+    const T = SMT(this._hass);
+    const text = na ? "—" : low ? T.warning : "OK";
+    const label = low ? T.voltage : T.power_supply;
     const tone = na ? "neutral" : low ? "error" : "success";
     const icon = low ? "mdi:flash-alert" : "mdi:power-plug-battery-outline";
     return this._metric(icon, id, label, tone, text);
@@ -164,14 +227,15 @@ class SystemMonitorCard extends HTMLElement {
   _bar(icon, title, percentId, usedId, freeId, warn, err) {
     const p = Math.max(0, Math.min(100, this._n(percentId) || 0));
     const tone = this._level(percentId, warn, err);
+    const T = SMT(this._hass);
     return `<button class="row tone-${tone}" data-more="${this._e(percentId)}">
       <ha-icon icon="${icon}"></ha-icon>
       <div class="rbody">
         <div class="rtop"><b>${this._e(title)}</b><span>${this._e(this._f(percentId))}</span></div>
         <div class="bar"><i style="width:${p}%"></i></div>
         <small>
-          <span class="lnk" data-more="${this._e(usedId)}">Belegt ${this._e(this._f(usedId))}</span>
-          <span class="lnk" data-more="${this._e(freeId)}">Frei ${this._e(this._f(freeId))}</span>
+          <span class="lnk" data-more="${this._e(usedId)}">${T.used} ${this._e(this._f(usedId))}</span>
+          <span class="lnk" data-more="${this._e(freeId)}">${T.free} ${this._e(this._f(freeId))}</span>
         </small>
       </div>
     </button>`;
@@ -179,6 +243,7 @@ class SystemMonitorCard extends HTMLElement {
 
   render() {
     const c = this._config;
+    const T = SMT(this._hass);
     const img = c.show_image === false ? "" : (c.image_url || "").trim() || BOARD_IMG;
 
     this.shadowRoot.innerHTML = `<style>${SystemMonitorCard.css}</style>
@@ -192,16 +257,16 @@ class SystemMonitorCard extends HTMLElement {
 
   <div class="metrics">
     ${this._metric("mdi:chip", c.cpu_entity, "CPU", this._level(c.cpu_entity, 60, 85))}
-    ${this._metric("mdi:thermometer", c.temperature_entity, "Temperatur", this._level(c.temperature_entity, 60, 75))}
+    ${this._metric("mdi:thermometer", c.temperature_entity, T.temperature, this._level(c.temperature_entity, 60, 75))}
     ${this._power(c.power_entity)}
   </div>
 
-  ${this._bar("mdi:memory", c.memory_title, c.memory_percent_entity, c.memory_used_entity, c.memory_free_entity, 70, 90)}
-  ${this._bar("mdi:harddisk", c.disk_title, c.disk_percent_entity, c.disk_used_entity, c.disk_free_entity, 75, 90)}
+  ${this._bar("mdi:memory", c.memory_title || T.memory, c.memory_percent_entity, c.memory_used_entity, c.memory_free_entity, 70, 90)}
+  ${this._bar("mdi:harddisk", c.disk_title || T.disk, c.disk_percent_entity, c.disk_used_entity, c.disk_free_entity, 75, 90)}
 
   <button class="boot" data-more="${this._e(c.last_start_entity)}">
     <ha-icon icon="mdi:restart"></ha-icon>
-    <span>Letzter Start</span><b>${this._e(this._f(c.last_start_entity))}</b>
+    <span>${T.last_start}</span><b>${this._e(this._f(c.last_start_entity))}</b>
   </button>
 
 </main></ha-card>`;
@@ -284,7 +349,7 @@ if (!window.customCards.some((c) => c.type === "system-monitor")) {
   window.customCards.push({
     type: "system-monitor",
     name: "System Monitor",
-    description: "Kompakte Monitoring-Karte für einen Host, z. B. Raspberry Pi 5 (Integration System Monitor).",
+    description: SMT().description,
     preview: true,
   });
 }
