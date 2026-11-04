@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0 - 2026-11-04
+
+- The card and its editor now appear in English by default and in German when Home Assistant is set to German. / Karte und Editor erscheinen jetzt standardmäßig auf Englisch und auf Deutsch, wenn Home Assistant auf Deutsch eingestellt ist.
+- The default titles for memory and storage follow the Home Assistant language; titles already saved in a card stay unchanged. / Die Standardtitel für Arbeitsspeicher und Speicher folgen der Sprache von Home Assistant; bereits gespeicherte Titel bleiben unverändert.
+- README shortened and available in English and German. / README gekürzt und auf Englisch und Deutsch verfügbar.
+
 ## 2.0.1 - 2026-10-27
 
 - Aufräumarbeiten ohne Funktionsänderung: doppelten Baustein der Netzteil-Kachel mit den anderen Kacheln zusammengeführt und eine überflüssige Prüfung entfernt. Aussehen, Konfiguration und Verhalten bleiben unverändert.
