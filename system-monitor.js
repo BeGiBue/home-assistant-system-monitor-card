@@ -242,7 +242,7 @@ class SystemMonitorCard extends HTMLElement {
   // Zustand nur, wenn verfügbar
   _v(id) {
     const s = this._s(id);
-    return s && !SM_OFF.includes(String(s.state)) ? s : null;
+    return s && !SM_OFF.includes(String(s.state ?? "").trim()) ? s : null;
   }
 
   _f(id) {
@@ -261,11 +261,14 @@ class SystemMonitorCard extends HTMLElement {
     return Number.isFinite(n) ? n : NaN;
   }
 
-  // Zahl und Einheit getrennt (für große Zahl mit kleiner Einheit)
+  // Wert und Einheit getrennt (große Zahl, kleine Einheit). Getrennt wird an der Einheit der Entität, nicht per
+  // Mustererkennung: Ein Zustand wie "1e5" oder ein Text bleibt so als Ganzes der Wert.
   _split(id) {
-    if (!this._v(id)) return { v: "—", u: "" };
-    const txt = String(this._f(id)), m = txt.match(/^(-?[\d.,\s]+?)\s*([^\d\s.,].*)?$/);
-    return m ? { v: m[1].trim(), u: (m[2] || "").trim() } : { v: txt, u: "" };
+    const s = this._v(id);
+    if (!s) return { v: "—", u: "" };
+    const txt = String(this._f(id) ?? "").trim();
+    const u = String(s.attributes?.unit_of_measurement ?? "").trim();
+    return u && txt.endsWith(u) && txt.length > u.length ? { v: txt.slice(0, -u.length).trim(), u } : { v: txt, u: "" };
   }
 
   _e(v) {
@@ -391,7 +394,7 @@ class SystemMonitorCard extends HTMLElement {
 
   _build(p) {
     const c = this._config;
-    const img = c.show_image === false ? "" : (c.image_url || "").trim() || BOARD_IMG;
+    const img = c.show_image === false ? "" : String(c.image_url || "").trim() || BOARD_IMG;
 
     this.shadowRoot.innerHTML = `<style>${SystemMonitorCard.css}</style>
 <ha-card>${img ? `<img class="bgimg" src="${this._e(img)}" alt="">` : ""}<main>
@@ -465,10 +468,10 @@ h1{margin:0;font-size:1.7em;font-weight:600;line-height:1.1;letter-spacing:-.01e
 .tile{min-width:0;display:grid;gap:.35em;align-content:start;padding:.7em;background:var(--fill);border:1px solid var(--line);border-radius:1em}
 .tile small{font-size:.85em;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .val{display:flex;align-items:baseline;gap:.25em;min-width:0}
-.val b{font-size:1.5em;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.val em,.pct em{font-style:normal;font-size:.85em;color:var(--mut);white-space:nowrap}
+.val b{flex:0 1 auto;min-width:0;font-size:1.5em;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.val em,.pct em{flex:0 8 auto;min-width:0;font-style:normal;font-size:.85em;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 em:empty{display:none}
-.tile.txt .val b{font-size:1.2em;line-height:1.375}
+.tile.txt .val b{font-size:1.1em;line-height:1.5}
 .tile.tone-warning .val b,.tile.tone-error .val b{color:var(--t)}
 .tile:active,.row:active,.info:active{background:var(--fill-hi);transform:scale(.985)}
 @media (hover:hover){.tile:hover,.row:hover,.info:hover{background:var(--fill-hi)}.lnk:hover{text-decoration:underline}}
@@ -477,13 +480,13 @@ em:empty{display:none}
 .row{width:100%;min-width:0;display:flex;align-items:center;gap:.8em;padding:.8em .9em}
 .rb{flex:1;min-width:0;display:grid;gap:.45em}
 .rt{display:flex;justify-content:space-between;align-items:baseline;gap:.6em;min-width:0}
-.rt>b{font-size:1.05em;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pct{flex:none;display:flex;align-items:baseline;gap:.2em}
-.pct b{font-size:1.25em;font-weight:600;font-variant-numeric:tabular-nums}
+.rt>b{flex:1 1 auto;font-size:1.05em;font-weight:600;min-width:3.5em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pct{flex:0 1 auto;min-width:0;display:flex;align-items:baseline;gap:.2em}
+.pct b{flex:0 1 auto;min-width:0;font-size:1.25em;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row.tone-warning .pct b,.row.tone-error .pct b{color:var(--t)}
 .bar{display:block;height:.3em;border-radius:.2em;background:var(--line);overflow:hidden}
 .bar u{display:block;height:100%;border-radius:inherit;background:var(--t);text-decoration:none;transition:width .4s}
-.uf{display:flex;justify-content:space-between;gap:.6em;color:var(--mut);font-size:.85em;min-width:0}
+.uf{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.1em .6em;color:var(--mut);font-size:.85em;min-width:0}
 .uf .lnk{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 .info{width:100%;min-width:0;display:flex;align-items:center;gap:.8em;padding:.6em .9em}
@@ -498,9 +501,8 @@ em:empty{display:none}
    umbrechen; unter ~280 px ohne Symbol in den Balkenzeilen. Die Klassen setzt _applyTier() mit Hysterese */
 .slim main{padding:12px}
 .slim .tiles{grid-template-columns:minmax(0,1fr)}
-.slim .tile{grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:.6em;padding:.45em .6em}
+.slim .tile{grid-template-columns:auto minmax(4em,1fr) minmax(0,auto);align-items:center;column-gap:.6em;padding:.45em .6em}
 .slim .tile.txt .val b{font-size:1.5em;line-height:1.1}
-.slim .uf{flex-wrap:wrap;gap:.1em .6em}
 .slim .at small{white-space:normal}
 .slim .bgimg{max-width:34%}
 .xslim .row{padding:.7em}

@@ -191,6 +191,52 @@ async () => {
     check(width + ' px (' + language + '): Unterspannungs-Warnung und breite Werte vollständig lesbar',
       [...card.shadowRoot.querySelectorAll('.val b, .pct b, .tile small')].every((el) => el.scrollWidth <= el.clientWidth + 1));
   }
+  // Lange oder nicht-numerische Werte: Beschriftungen bleiben lesbar, nichts ragt aus Kachel, Zeile oder Card
+  for (const width of [240, 280, 300, 320, 350, 480, 800]) {
+    const s = baseStates(), long = 'v2.4.1-20260914-rc3+build.5521 (stable channel)';
+    s['sensor.system_monitor_processor_use'] = st(long, '%');
+    s['sensor.system_monitor_memory_use_percent'] = st(long, '%');
+    s['sensor.system_monitor_processor_temperature'] = st('12345.678', 'Millivolt-Ampere');
+    s['sensor.system_monitor_disk_use'] = st('1234.56', 'GiB');
+    s['sensor.system_monitor_disk_free'] = st('1234.56', 'GiB');
+    const {card} = fixture({width, states: s});
+    await frames();
+    const hc = q(card, 'ha-card').getBoundingClientRect();
+    const labels = [...card.shadowRoot.querySelectorAll('[data-k="l"]')].every((el) => el.getBoundingClientRect().width >= 24);
+    const number = q(card, '[data-part="temp"] [data-k="v"]').getBoundingClientRect().width >= 24;
+    const inside = [...card.shadowRoot.querySelectorAll('.tile, .row, .info, [data-k]')].every((el) => {
+      const r = el.getBoundingClientRect(), box = (el.closest('.tile, .row, .info') || el).getBoundingClientRect();
+      return (!r.width && !r.height) || (r.right <= hc.right + .5 && r.right <= box.right + .5 && r.left >= box.left - .5);
+    });
+    const uf = [...card.shadowRoot.querySelectorAll('[data-part="disk"] .lnk')].every((el) => el.scrollWidth <= el.clientWidth + 1);
+    check(width + ' px: lange Werte verdrängen keine Beschriftung und bleiben in ihrer Kachel', labels && number && inside && q(card, 'main').scrollWidth <= Math.ceil(hc.width));
+    check(width + ' px: große Belegt/Frei-Werte vollständig (Umbruch statt Kürzung)', uf);
+  }
+  for (const width of [688, 696, 704]) {
+    const s = baseStates();
+    for (const id of ['memory_use', 'memory_free', 'disk_use', 'disk_free']) s['sensor.system_monitor_' + id] = st('1234.56', 'GiB');
+    const {card} = fixture({width, states: s});
+    await frames();
+    check(width + ' px: große Belegt/Frei-Werte vollständig', [...card.shadowRoot.querySelectorAll('.lnk')].every((el) => el.scrollWidth <= el.clientWidth + 1));
+  }
+  {
+    const s = baseStates();
+    s['binary_sensor.rpi_power_status'] = st('on');
+    const {card} = fixture({width: 360, states: s});
+    await frames();
+    document.getElementById('w').style.width = '319px';
+    await frames(); await frames();
+    const v = q(card, '[data-part="power"] [data-k="v"]');
+    check('319 px von oben (noch drei Spalten): „Warnung" vollständig', !q(card, 'ha-card').classList.contains('slim') && v.scrollWidth <= v.clientWidth + 1);
+    const odd = baseStates();
+    odd['sensor.system_monitor_processor_use'] = st('1e5', '%');
+    odd['sensor.system_monitor_processor_temperature'] = st(' ', '°C');
+    const c2 = fixture({states: odd}).card;
+    check('Zustand „1e5" bleibt als Ganzes der Wert, Einheit bleibt die Einheit', text(c2, '[data-part="cpu"] [data-k="v"]') === '1e5' && text(c2, '[data-part="cpu"] [data-k="u"]') === '%');
+    check('Leerer Zustand aus Leerzeichen gilt als nicht verfügbar', text(c2, '[data-part="temp"] [data-k="v"]') === '—' && part(c2, 'temp').classList.contains('tone-neutral'));
+    const c3 = fixture({config: {image_url: 5}}).card;
+    check('Bild-Adresse, die kein Text ist, wirft keinen Fehler', !!q(c3, 'ha-card'));
+  }
   // Nachgebildete Scrollleiste: Ist die Card höher als H, wird ihr Platz 15 px schmaler (wie bei einer
   // einblendenden Scrollleiste). Um jede Layout-Schwelle darf die Breite danach nicht dauerhaft hin- und herkippen.
   for (const T of [280, 330, 400, 600, 700, 800, 1000]) {
