@@ -20,6 +20,9 @@ body{margin:0;padding:14px;background:#e9edf1;font-family:Roboto,Inter,sans-seri
 --primary-text-color:#141414;--secondary-text-color:#6b6f76;--primary-color:#009ac7;--success-color:#43a047;
 --warning-color:#ff9800;--error-color:#e53935;--card-background-color:#fff}
 </style><div id="w"></div><script>
+window.__errors = [];
+window.addEventListener('error', (e) => window.__errors.push(String(e.message || e)));
+window.addEventListener('unhandledrejection', (e) => window.__errors.push('rejection: ' + e.reason));
 customElements.define('ha-card',class extends HTMLElement{constructor(){super();this.attachShadow({mode:'open'}).innerHTML=
   '<style>:host{display:block;background:#fff;border-radius:16px;border:1px solid #dfe3e8;box-sizing:border-box}</style><slot></slot>'}});
 customElements.define('ha-icon',class extends HTMLElement{connectedCallback(){(this.shadowRoot||this.attachShadow({mode:'open'})).innerHTML=
@@ -249,6 +252,14 @@ async () => {
     early.setConfig({});
     check('Werte vor der Einstellung gesetzt: Aufbau ohne Fehler', text(early, '[data-part="cpu"] [data-k="v"]') === '12');
   }
+  {
+    const heights = [];
+    for (const width of [240, 350, 480]) { const {card} = fixture({width}); await frames(); heights.push(card.getGridOptions().min_rows); }
+    const fresh = document.createElement('system-monitor');
+    check('Mindesthöhe vor der ersten Messung reicht für den Inhalt schmaler Cards (' + fresh.getGridOptions().min_rows + ' ≥ ' + Math.max(...heights) + ')', fresh.getGridOptions().min_rows >= Math.max(...heights));
+  }
+  await frames();
+  check('Keine Fehlermeldungen des Browsers, auch kein „ResizeObserver loop" (' + window.__errors.length + ')', window.__errors.length === 0);
   return results;
 }
 """

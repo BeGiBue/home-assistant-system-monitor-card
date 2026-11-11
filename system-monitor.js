@@ -162,7 +162,7 @@ class SystemMonitorCard extends HTMLElement {
   // Sections-Dashboard: Höhe ergibt sich aus dem Inhalt; min_rows verhindert, dass im Layout-Editor
   // weniger Zeilen eingestellt werden, als der Inhalt braucht (sonst ragt die Card in die nächste hinein)
   getGridOptions() {
-    return { columns: 12, min_columns: 6, min_rows: this._minRows || 7 };
+    return { columns: 12, min_columns: 6, min_rows: this._minRows || 8 };
   }
 
   // Masonry-Dashboard: ungefähre Höhe in Zeilen (je ca. 50 px)
@@ -173,9 +173,14 @@ class SystemMonitorCard extends HTMLElement {
 
   connectedCallback() {
     if (!this._ro && typeof ResizeObserver !== "undefined") {
+      // Im nächsten Bild statt direkt im Callback: Schriftstufe und Layout ändern die Höhe der Card, und eine
+      // Größenänderung innerhalb des Callbacks meldet der Browser als Fehler ("ResizeObserver loop …")
       this._ro = new ResizeObserver(() => {
-        this._applyTier();
-        this._measure();
+        cancelAnimationFrame(this._raf);
+        this._raf = requestAnimationFrame(() => {
+          this._applyTier();
+          this._measure();
+        });
       });
     }
     this._ro?.observe(this);
@@ -185,6 +190,7 @@ class SystemMonitorCard extends HTMLElement {
 
   disconnectedCallback() {
     this._ro?.disconnect();
+    cancelAnimationFrame(this._raf);
   }
 
   // Schriftstufe nach Breite (14/15/17/19/22 px ab 0/400/600/800/1000 px) und breites Layout ab 700 px, beide
