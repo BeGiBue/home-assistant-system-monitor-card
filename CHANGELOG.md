@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.2.0 - 2026-11-11
+
+- New look in line with the NAS, Eaton UPS and TouchKio cards: three large tiles for CPU, temperature and power supply, memory and storage as panels with a bar, last boot as its own row. Bars and values use the accent colour and turn orange or red above the thresholds. / Neues Aussehen passend zu NAS-, Eaton-UPS- und TouchKio-Card: drei große Kacheln für CPU, Temperatur und Netzteil, Arbeitsspeicher und Speicher als Felder mit Balken, „Letzter Start" als eigene Zeile. Balken und Werte nutzen die Akzentfarbe und werden oberhalb der Schwellwerte orange oder rot.
+- The card is built once and then only sets the values that changed, and only when one of its own entities changed. The keyboard focus survives incoming values, bars glide to the new value, and the device image is no longer reloaded. / Die Karte wird einmal aufgebaut und setzt danach nur geänderte Werte, und nur wenn sich eine eigene Entität geändert hat. Der Tastaturfokus übersteht eintreffende Werte, die Balken gleiten zum neuen Wert, das Gerätebild wird nicht mehr neu geladen.
+- Unavailable or unknown values are shown as "—" in grey with an empty bar instead of 0 %. / Nicht verfügbare oder unbekannte Werte erscheinen als „—" in Grau mit leerem Balken statt als 0 %.
+- Text and spacing grow with the card width (phone, tablet, kiosk); from about 700 px memory and storage sit side by side. A few pixels of width change no longer make the layout flip. / Schrift und Abstände wachsen mit der Kartenbreite (Handy, Tablet, Kiosk); ab etwa 700 px stehen Arbeitsspeicher und Speicher nebeneinander. Wenige Pixel Breitenänderung lassen das Layout nicht mehr kippen.
+- The fixed height of 6 rows is gone: the card is as tall as its content (about 50 px taller on a phone) and reports the height it needs to the Sections dashboard. Minimum width in Sections is now 6 columns instead of 3; below about 330 px the three values are stacked as rows. / Die feste Höhe von 6 Zeilen entfällt: Die Karte ist so hoch wie ihr Inhalt (auf dem Handy etwa 50 px höher) und meldet dem Sections-Dashboard die benötigte Höhe. Die Mindestbreite in Sections beträgt jetzt 6 statt 3 Spalten; unter etwa 330 px stehen die drei Messwerte als Zeilen untereinander.
+- Visible focus outline and press feedback on all buttons; respects "reduce motion". / Sichtbarer Fokusrahmen und Rückmeldung beim Antippen auf allen Schaltflächen; beachtet „Bewegung reduzieren".
+- Card type, options and entities are unchanged. / Kartentyp, Optionen und Entitäten bleiben unverändert.
+- Browser tests added (no rebuild on value changes, unavailable values, layout at several widths). / Browser-Tests ergänzt (kein Neuaufbau bei Wertänderungen, nicht verfügbare Werte, Layout in mehreren Breiten).
+
 ## 2.1.0 - 2026-11-04
 
 - The card and its editor now appear in English by default and in German when Home Assistant is set to German. / Karte und Editor erscheinen jetzt standardmäßig auf Englisch und auf Deutsch, wenn Home Assistant auf Deutsch eingestellt ist.
