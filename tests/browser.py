@@ -188,9 +188,38 @@ async () => {
     check(width + ' px (' + language + '): Unterspannungs-Warnung und breite Werte vollständig lesbar',
       [...card.shadowRoot.querySelectorAll('.val b, .pct b, .tile small')].every((el) => el.scrollWidth <= el.clientWidth + 1));
   }
+  // Nachgebildete Scrollleiste: Ist die Card höher als H, wird ihr Platz 15 px schmaler (wie bei einer
+  // einblendenden Scrollleiste). Um jede Layout-Schwelle darf die Breite danach nicht dauerhaft hin- und herkippen.
+  for (const T of [280, 330, 400, 600, 700, 800, 1000]) {
+    const host = document.getElementById('w');
+    host.replaceChildren();
+    host.style.width = 'auto';
+    const hass = {states: baseStates(), language: 'de', locale: {language: 'de'}};
+    const mk = (W) => {
+      const box = document.createElement('div'); box.style.width = W + 'px';
+      const c = document.createElement('system-monitor'); c.setConfig({}); box.appendChild(c); host.appendChild(box); c.hass = hass;
+      return {box, c};
+    };
+    const probe = [T - 20, T + 20].map(mk);
+    await frames();
+    const hs = probe.map((p) => p.c.offsetHeight), lo = Math.min(...hs) - 3, hi = Math.max(...hs) + 3;
+    host.replaceChildren();
+    const cards = [];
+    for (let W = T - 14; W <= T + 30; W += 2) for (let H = lo; H <= hi; H += Math.max(2, Math.ceil((hi - lo) / 6))) cards.push({...mk(W), W, H, cur: W, n: 0});
+    await frames();
+    for (let f = 0; f < 60; f++) {
+      const now = cards.map((o) => o.c.offsetHeight);
+      cards.forEach((o, i) => { const want = o.W - (now[i] > o.H ? 15 : 0); if (want !== o.cur) { o.cur = want; o.box.style.width = want + 'px'; o.n++; } });
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    const worst = Math.max(...cards.map((o) => o.n));
+    check('Scrollleiste um ' + T + ' px: Breite pendelt sich ein (höchstens ' + worst + ' Wechsel in 60 Bildern)', worst <= 4);
+  }
   for (const [start, steps, expect, read] of [
     [395, [405, 395, 409, 414, 392, 386], ['14px', '14px', '14px', '14px', '15px', '15px', '14px'], (c) => c.style.getPropertyValue('--fs')],
     [695, [705, 695, 709, 714, 692, 686], ['n', 'n', 'n', 'n', 'w', 'w', 'n'], (c) => (c.shadowRoot.querySelector('ha-card').classList.contains('wide') ? 'w' : 'n')],
+    [325, [335, 325, 339, 344, 322, 316], ['s', 's', 's', 's', 'n', 'n', 's'], (c) => (c.shadowRoot.querySelector('ha-card').classList.contains('slim') ? 's' : 'n')],
+    [275, [285, 275, 289, 294, 272, 266], ['x', 'x', 'x', 'x', 'n', 'n', 'x'], (c) => (c.shadowRoot.querySelector('ha-card').classList.contains('xslim') ? 'x' : 'n')],
   ]) {
     const {card} = fixture({width: start});
     await frames();

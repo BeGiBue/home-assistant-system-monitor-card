@@ -206,9 +206,18 @@ class SystemMonitorCard extends HTMLElement {
       this._tier = t;
       this.style.setProperty("--fs", S[t] + "px");
     }
-    const wide = this._wide === undefined ? w >= 700 : this._wide ? w >= 700 - H : w >= 700 + H;
-    this._wide = wide;
-    this.shadowRoot.querySelector("ha-card")?.classList.toggle("wide", wide);
+    // Auch die schmalen Layouts per Klasse mit Hysterese statt per Container-Abfrage: Sie ändern die Höhe, und eine
+    // dadurch ein- und ausblendende Scrollleiste würde die Breite sonst endlos um die Schwelle kippen
+    const below = (prev, at) => (prev === undefined ? w <= at : prev ? w <= at + H : w <= at - H);
+    this._wide = this._wide === undefined ? w >= 700 : this._wide ? w >= 700 - H : w >= 700 + H;
+    this._slim = below(this._slim, 330);
+    this._xslim = below(this._xslim, 280);
+    const cl = this.shadowRoot.querySelector("ha-card")?.classList;
+    if (cl) {
+      cl.toggle("wide", this._wide);
+      cl.toggle("slim", this._slim);
+      cl.toggle("xslim", this._xslim);
+    }
   }
 
   // Natürliche Inhaltshöhe in Grid-Zeilen umrechnen (HA: 56 px Zeile + 8 px Abstand)
@@ -479,20 +488,17 @@ em:empty{display:none}
 /* ab ~700 px (iPad, Kiosk): Arbeitsspeicher und Speicher nebeneinander; die Klasse setzt _applyTier() mit Hysterese */
 .wide main{grid-template-columns:repeat(2,minmax(0,1fr))}
 .wide .title,.wide .tiles,.wide .info{grid-column:1/-1}
-/* schmal (halbe Sections-Spalte, sehr kleine Displays): Messwerte als Zeilen untereinander, Belegt/Frei darf umbrechen */
-@container (max-width:330px){
-  main{padding:12px}
-  .tiles{grid-template-columns:minmax(0,1fr)}
-  .tile{grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:.6em;padding:.45em .6em}
-  .tile.txt .val b{font-size:1.5em;line-height:1.1}
-  .uf{flex-wrap:wrap;gap:.1em .6em}
-  .at small{white-space:normal}
-  .bgimg{max-width:34%}
-}
-@container (max-width:280px){
-  .row{padding:.7em}
-  .row>.chip{display:none}
-}
+/* schmal bis ~330 px (halbe Sections-Spalte, sehr kleine Displays): Messwerte als Zeilen untereinander, Belegt/Frei darf
+   umbrechen; unter ~280 px ohne Symbol in den Balkenzeilen. Die Klassen setzt _applyTier() mit Hysterese */
+.slim main{padding:12px}
+.slim .tiles{grid-template-columns:minmax(0,1fr)}
+.slim .tile{grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:.6em;padding:.45em .6em}
+.slim .tile.txt .val b{font-size:1.5em;line-height:1.1}
+.slim .uf{flex-wrap:wrap;gap:.1em .6em}
+.slim .at small{white-space:normal}
+.slim .bgimg{max-width:34%}
+.xslim .row{padding:.7em}
+.xslim .row>.chip{display:none}
 @media (prefers-reduced-motion:reduce){
   .bar u{transition:none}
   .tile:active,.row:active,.info:active{transform:none}
