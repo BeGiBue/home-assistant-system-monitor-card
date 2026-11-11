@@ -10,7 +10,7 @@
 
 Compact card for monitoring the host Home Assistant runs on, preconfigured for a **Raspberry Pi 5** with the **System Monitor** integration.
 
-<img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/screenshots/system-monitor-normal-350-light.png" width="350" alt="System Monitor Card in normal operation">
+<img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/screenshots/system-monitor-normal-350-light.png?v=2" width="350" alt="System Monitor Card in normal operation">
 
 ### Features
 
@@ -35,7 +35,7 @@ Independent community project, not affiliated with, endorsed or published by Ras
 
 Kompakte Karte zur Überwachung des Hosts, auf dem Home Assistant läuft, vorkonfiguriert für einen **Raspberry Pi 5** mit der Integration **System Monitor**.
 
-<img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/screenshots/system-monitor-normal-350-light.png" width="350" alt="System Monitor Card im Normalbetrieb">
+<img src="https://raw.githubusercontent.com/BeGiBue/home-assistant-system-monitor-card/main/screenshots/system-monitor-normal-350-light.png?v=2" width="350" alt="System Monitor Card im Normalbetrieb">
 
 ### Funktionen
 
