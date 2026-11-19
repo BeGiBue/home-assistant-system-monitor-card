@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 - 2026-11-19
+
+- The CPU temperature thresholds can be set in the visual editor (section System): `temperature_warning` (orange) and `temperature_critical` (red), in °C. / Die Schwellen der CPU-Temperatur lassen sich im grafischen Editor einstellen (Abschnitt System): `temperature_warning` (orange) und `temperature_critical` (rot), in °C.
+- New defaults for a Raspberry Pi 5 without cooling: orange from 75 °C instead of 60 °C, red from 80 °C instead of 75 °C. Idle is about 65 °C without cooling, and the Pi starts throttling at 80 °C. With the Active Cooler, e.g. 70 °C / 80 °C fit well. / Neue Standardwerte für einen Raspberry Pi 5 ohne Kühlung: orange ab 75 °C statt 60 °C, rot ab 80 °C statt 75 °C. Ohne Kühlung liegt der Leerlauf bei etwa 65 °C, ab 80 °C drosselt der Pi. Mit Active Cooler passen z. B. 70 °C / 80 °C.
+- Empty or invalid values fall back to the defaults; red is never set below orange. / Leere oder ungültige Werte fallen auf die Standardwerte zurück; Rot liegt nie unter Orange.
+
 ## 2.2.0 - 2026-11-11
 
 - New look in line with the NAS, Eaton UPS and TouchKio cards: three large tiles for CPU, temperature and power supply, memory and storage as panels with a bar, last boot as its own row. Bars and values use the accent colour and turn orange or red above the thresholds. / Neues Aussehen passend zu NAS-, Eaton-UPS- und TouchKio-Card: drei große Kacheln für CPU, Temperatur und Netzteil, Arbeitsspeicher und Speicher als Felder mit Balken, „Letzter Start" als eigene Zeile. Balken und Werte nutzen die Akzentfarbe und werden oberhalb der Schwellwerte orange oder rot.

@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '22'
       - run: node --check system-monitor.js
-      - run: node --test tests/security.test.mjs
+      - run: node --test tests/*.test.mjs
 
   browser:
     name: Browser layout and updates

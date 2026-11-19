@@ -16,7 +16,8 @@ Compact card for monitoring the host Home Assistant runs on, preconfigured for a
 
 - Tiles for CPU usage, CPU temperature and power supply status
 - Memory and storage bars with percentage, used and free
-- Warning colors by threshold; last boot in your Home Assistant format
+- Warning colors by threshold; CPU temperature thresholds adjustable in the editor (default orange from 75 °C, red from 80 °C, for a Raspberry Pi 5 without cooling)
+- Last boot in your Home Assistant format
 - Tapping a value opens the entity's details
 - Follows your theme; visual editor with native entity pickers
 
@@ -41,7 +42,8 @@ Kompakte Karte zur Überwachung des Hosts, auf dem Home Assistant läuft, vorkon
 
 - Kacheln für CPU-Auslastung, CPU-Temperatur und Netzteilstatus
 - Balken für Arbeitsspeicher und Speicher mit Prozent, Belegt und Frei
-- Warnfarben nach Schwellwerten; letzter Start im Format von Home Assistant
+- Warnfarben nach Schwellwerten; Schwellen der CPU-Temperatur im Editor einstellbar (Standard orange ab 75 °C, rot ab 80 °C, für einen Raspberry Pi 5 ohne Kühlung)
+- Letzter Start im Format von Home Assistant
 - Tippen auf einen Wert öffnet die Details der Entität
 - Folgt dem Theme; grafischer Editor mit nativen Entity-Pickern
 
