@@ -1,7 +1,7 @@
 /*
  * System Monitor Card — kompakte Home Assistant Custom Card zur Überwachung
  * eines Hosts (vorkonfiguriert für Raspberry Pi 5 mit der Integration "System Monitor").
- * Version 2.2.0 — AGPL-3.0-only — BeGiBue
+ * Version 2.3.0 — AGPL-3.0-only — BeGiBue
  * https://github.com/BeGiBue/home-assistant-system-monitor-card
  *
  * Installation: siehe README.md (HACS) oder manuell:
@@ -11,7 +11,7 @@
  *   3. Karte hinzufügen:  type: custom:system-monitor
  */
 
-const SYSTEM_MONITOR_CARD_VERSION = "2.2.0";
+const SYSTEM_MONITOR_CARD_VERSION = "2.3.0";
 
 // Eingebettete Platinen-Illustration (eigene Zeichnung, ohne Logo); optional per image_url ersetzbar
 const BOARD_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 118"><defs><linearGradient id="pcb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f9a52"/><stop offset="1" stop-color="#1b6d38"/></linearGradient><linearGradient id="met" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f3f6"/><stop offset="1" stop-color="#aeb4be"/></linearGradient><linearGradient id="soc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9dde3"/><stop offset="1" stop-color="#8f96a2"/></linearGradient><linearGradient id="usb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4fb8"/></linearGradient><linearGradient id="usb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4f58"/><stop offset="1" stop-color="#23262c"/></linearGradient></defs><rect x="6" y="6" width="168" height="106" rx="8" fill="url(#pcb)" stroke="#124f28" stroke-width="1.5"/><rect x="9" y="9" width="162" height="100" rx="6" fill="none" stroke="#ffffff" stroke-opacity=".12"/><path d="M24 30H58" stroke="#ffffff" stroke-opacity=".10" stroke-width="1"/><path d="M24 36H58" stroke="#ffffff" stroke-opacity=".10" stroke-width="1"/><path d="M24 42H58" stroke="#ffffff" stroke-opacity=".10" stroke-width="1"/><circle cx="16" cy="16" r="4.6" fill="#d8b24a"/><circle cx="16" cy="16" r="2.6" fill="#0f3d20"/><circle cx="16" cy="102" r="4.6" fill="#d8b24a"/><circle cx="16" cy="102" r="2.6" fill="#0f3d20"/><circle cx="122" cy="16" r="4.6" fill="#d8b24a"/><circle cx="122" cy="16" r="2.6" fill="#0f3d20"/><circle cx="122" cy="102" r="4.6" fill="#d8b24a"/><circle cx="122" cy="102" r="2.6" fill="#0f3d20"/><rect x="30" y="10" width="86" height="11" rx="1.5" fill="#1a1c20"/><rect x="33.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="33.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="37.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="37.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="41.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="41.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="45.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="45.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="49.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="49.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="54.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="54.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="58.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="58.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="62.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="62.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="66.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="66.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="70.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="70.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="75.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="75.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="79.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="79.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="83.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="83.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="87.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="87.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="91.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="91.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="96.0" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="96.0" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="100.2" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="100.2" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="104.4" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="104.4" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="108.6" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="108.6" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="112.8" y="12" width="2.2" height="2.2" fill="#e6c25a"/><rect x="112.8" y="16.4" width="2.2" height="2.2" fill="#e6c25a"/><rect x="60" y="36" width="40" height="40" rx="4" fill="#202328"/><rect x="63" y="39" width="34" height="34" rx="3" fill="url(#soc)" stroke="#6f7580" stroke-width="1"/><rect x="68" y="44" width="24" height="24" rx="2" fill="none" stroke="#ffffff" stroke-opacity=".45"/><rect x="106" y="40" width="22" height="26" rx="2.5" fill="#17191d"/><rect x="109" y="43" width="16" height="3" fill="#ffffff" fill-opacity=".14"/><rect x="28" y="44" width="24" height="18" rx="2" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="30" y="70" width="7" height="4" rx=".8" fill="#161719"/><rect x="40" y="70" width="7" height="4" rx=".8" fill="#161719"/><rect x="50" y="70" width="7" height="4" rx=".8" fill="#161719"/><rect x="104" y="74" width="5" height="8" rx=".8" fill="#161719"/><rect x="112" y="74" width="5" height="8" rx=".8" fill="#161719"/><rect x="60" y="84" width="10" height="5" rx=".8" fill="#161719"/><rect x="2" y="48" width="20" height="24" rx="2" fill="#2a2d33"/><rect x="4" y="52" width="14" height="16" rx="1" fill="#14161a"/><rect x="130" y="10" width="16" height="6" rx="1" fill="#f0f0ee"/><rect x="130" y="100" width="16" height="6" rx="1" fill="#f0f0ee"/><rect x="22" y="104" width="15" height="9" rx="2.5" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="26" y="107" width="7" height="3" rx="1.5" fill="#1a1c20"/><rect x="46" y="104" width="14" height="9" rx="1.5" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="49" y="107" width="8" height="3" fill="#1a1c20"/><rect x="66" y="104" width="14" height="9" rx="1.5" fill="url(#met)" stroke="#8d939d" stroke-width=".8"/><rect x="69" y="107" width="8" height="3" fill="#1a1c20"/><rect x="136" y="20" width="40" height="32" rx="2" fill="url(#met)" stroke="#8d939d" stroke-width="1"/><rect x="150" y="26" width="22" height="20" rx="1.5" fill="#14161a"/><rect x="152" y="28" width="18" height="3" fill="#e6c25a" fill-opacity=".8"/><circle cx="142" cy="26" r="1.6" fill="#7bd88f"/><circle cx="142" cy="32" r="1.6" fill="#f2b84b"/><rect x="136" y="54" width="40" height="26" rx="2" fill="url(#usb3)" stroke="#173f94" stroke-width="1"/><rect x="152" y="58" width="20" height="7" fill="#0c1220"/><rect x="152" y="69" width="20" height="7" fill="#0c1220"/><rect x="136" y="82" width="40" height="26" rx="2" fill="url(#usb2)" stroke="#16181c" stroke-width="1"/><rect x="152" y="86" width="20" height="7" fill="#0c0d10"/><rect x="152" y="97" width="20" height="7" fill="#0c0d10"/></svg>';
@@ -27,6 +27,8 @@ const SM_I18N={
     "l_image_url": "Custom device image (URL, optional)",
     "l_cpu_entity": "CPU usage",
     "l_temperature_entity": "CPU temperature",
+    "l_temperature_warning": "Temperature: orange from (°C)",
+    "l_temperature_critical": "Temperature: red from (°C)",
     "l_power_entity": "Power supply / undervoltage",
     "l_memory_percent_entity": "RAM used (%)",
     "l_memory_used_entity": "RAM used",
@@ -41,6 +43,8 @@ const SM_I18N={
     "s_disk": "Storage",
     "s_boot": "Boot",
     "h_image_url": "Empty = built-in illustration, e.g. /local/images/pi5.png",
+    "h_temperature_warning": "Default 75 °C (Raspberry Pi 5 without cooling, idle about 65 °C). With Active Cooler e.g. 70 °C.",
+    "h_temperature_critical": "Default 80 °C: the Raspberry Pi starts throttling the CPU here.",
     "memory": "Memory",
     "disk": "Storage",
     "temperature": "Temperature",
@@ -60,6 +64,8 @@ const SM_I18N={
     "l_image_url": "Eigenes Gerätebild (URL, optional)",
     "l_cpu_entity": "CPU-Auslastung",
     "l_temperature_entity": "CPU-Temperatur",
+    "l_temperature_warning": "Temperatur: orange ab (°C)",
+    "l_temperature_critical": "Temperatur: rot ab (°C)",
     "l_power_entity": "Netzteil / Unterspannung",
     "l_memory_percent_entity": "RAM belegt (%)",
     "l_memory_used_entity": "RAM belegt",
@@ -74,6 +80,8 @@ const SM_I18N={
     "s_disk": "Speicher",
     "s_boot": "Start",
     "h_image_url": "Leer = eingebettete Illustration, z. B. /local/images/pi5.png",
+    "h_temperature_warning": "Standard 75 °C (Raspberry Pi 5 ohne Kühlung, Leerlauf etwa 65 °C). Mit Active Cooler z. B. 70 °C.",
+    "h_temperature_critical": "Standard 80 °C: Ab hier drosselt der Raspberry Pi die CPU.",
     "memory": "Arbeitsspeicher",
     "disk": "Speicher",
     "temperature": "Temperatur",
@@ -99,6 +107,11 @@ const DEF = {
   cpu_entity: "sensor.system_monitor_processor_use",
   temperature_entity: "sensor.system_monitor_processor_temperature",
   power_entity: "binary_sensor.rpi_power_status",
+
+  // Farbschwellen der CPU-Temperatur in °C, Standard für Raspberry Pi 5 ohne Kühlung:
+  // Leerlauf etwa 65 °C, Drosselung ab 80 °C, hartes Limit 85 °C
+  temperature_warning: 75,
+  temperature_critical: 80,
 
   memory_percent_entity: "sensor.system_monitor_memory_use_percent",
   memory_used_entity: "sensor.system_monitor_memory_use",
@@ -129,19 +142,20 @@ class SystemMonitorCard extends HTMLElement {
   static getConfigForm() {
     const e = (n) => ({ name: n, selector: { entity: {} } });
     const t = (n) => ({ name: n, selector: { text: {} } });
+    const c = (n) => ({ name: n, selector: { number: { min: 0, max: 120, step: 1, mode: "box", unit_of_measurement: "°C" } } });
     const x = (name, title, schema) => ({ type: "expandable", name, title, flatten: true, schema });
     const T = SMT();
     const L = { memory_title: T.l_title, disk_title: T.l_title };
     return {
       schema: [
         x("general", T.s_general, [t("title"), t("subtitle"), { name: "icon", selector: { icon: {} } }, { name: "show_image", selector: { boolean: {} } }, t("image_url")]),
-        x("system", T.s_system, [e("cpu_entity"), e("temperature_entity"), e("power_entity")]),
+        x("system", T.s_system, [e("cpu_entity"), e("temperature_entity"), c("temperature_warning"), c("temperature_critical"), e("power_entity")]),
         x("memory", T.s_memory, [t("memory_title"), e("memory_percent_entity"), e("memory_used_entity"), e("memory_free_entity")]),
         x("disk", T.s_disk, [t("disk_title"), e("disk_percent_entity"), e("disk_used_entity"), e("disk_free_entity")]),
         x("boot", T.s_boot, [e("last_start_entity")]),
       ],
       computeLabel: (s) => L[s.name] || T[`l_${s.name}`],
-      computeHelper: (s) => (s.name === "image_url" ? T.h_image_url : undefined),
+      computeHelper: (s) => T[`h_${s.name}`],
     };
   }
 
@@ -319,11 +333,19 @@ class SystemMonitorCard extends HTMLElement {
     };
   }
 
+  // Temperaturschwellen aus der Konfiguration; leere oder ungültige Werte fallen auf den Standard zurück,
+  // und Rot liegt nie unter Orange (sonst würde Orange nie erscheinen)
+  _tempLimits() {
+    const num = (v, d) => (v === "" || v === null || v === undefined || !Number.isFinite(Number(v)) ? d : Number(v));
+    const warn = num(this._config.temperature_warning, DEF.temperature_warning);
+    return [warn, Math.max(warn, num(this._config.temperature_critical, DEF.temperature_critical))];
+  }
+
   _computeParts() {
     const c = this._config, T = SMT(this._hass);
     return {
       cpu: this._metricPart("mdi:chip", c.cpu_entity, "CPU", 60, 85),
-      temp: this._metricPart("mdi:thermometer", c.temperature_entity, T.temperature, 60, 75),
+      temp: this._metricPart("mdi:thermometer", c.temperature_entity, T.temperature, ...this._tempLimits()),
       power: this._powerPart(c.power_entity),
       mem: this._barPart(c.memory_title || T.memory, c.memory_percent_entity, c.memory_used_entity, c.memory_free_entity, 70, 90),
       disk: this._barPart(c.disk_title || T.disk, c.disk_percent_entity, c.disk_used_entity, c.disk_free_entity, 75, 90),
