@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.1 - 2026-11-20
+
+- Maintenance: test and build tools updated, no functional changes. / Wartung: Test- und Build-Werkzeuge aktualisiert, keine Änderungen an der Funktion.
+
 ## 2.3.0 - 2026-11-19
 
 - The CPU temperature thresholds can be set in the visual editor (section System): `temperature_warning` (orange) and `temperature_critical` (red), in °C. / Die Schwellen der CPU-Temperatur lassen sich im grafischen Editor einstellen (Abschnitt System): `temperature_warning` (orange) und `temperature_critical` (rot), in °C.
